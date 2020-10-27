@@ -40,4 +40,20 @@ You may assume that both input words are exactly 3 letters long.
 
 There are test cases at the bottom of the file. Try to fulfill the easy cases first, before enabling the harder cases.
 
-You are given a dictionary of three letter words:
+You are given a dictionary of three letter words
+
+## Scrabble Solver (idea)
+
+An interesting problem (that was not asked in an interview to date) is a variation on the theme of word searching. Develop an algorithm that finds the best words from a rack of seven letters (as one would have in a scrabble game). The point of this is not to solve for a specific board game position but to find candidate words that not only take into account length of word but also weighted by letter point value.
+
+This would require a mapping of letters and values as well as an algorithm that efficiently identifies candidates from the set of characters. 
+
+Scrabble sets have 100 tiles with the following distribution and values
+2 blank tiles (scoring 0 points)
+1 point: E ×12, A ×9, I ×9, O ×8, N ×6, R ×6, T ×6, L ×4, S ×4, U ×4
+2 points: D ×4, G ×3
+3 points: B ×2, C ×2, M ×2, P ×2
+4 points: F ×2, H ×2, V ×2, W ×2, Y ×2
+5 points: K ×1
+8 points: J ×1, X ×1
+10 points: Q ×1, Z ×1
