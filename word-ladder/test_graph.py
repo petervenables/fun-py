@@ -1,4 +1,3 @@
-import pytest
 from graph import Graph, Edge, Node
 
 
@@ -47,45 +46,67 @@ class TestGraph:
     def test_graph_new(self):
         graph1 = Graph()
         graph2 = Graph()
-        graph1.add_vertex("one")
+        vertex = graph1.new_vertex("one")
+        assert isinstance(vertex, Node)
         assert len(graph1.get_vertices()) == 1
         assert len(graph2.get_vertices()) == 0
 
-    def test_graph_add_vertex(self):
+    def test_graph_new_vertex(self):
         graph1 = Graph()
-        graph1.add_vertex("one")
-        graph1.add_vertex("two")
+        graph1.new_vertex("one")
+        graph1.new_vertex("two")
         assert len(graph1.get_vertices()) == 2
 
-    def test_graph_add_node(self):
+    def test_graph_duplicate_new_vertex(self):
+        graph1 = Graph()
+        vertex1 = graph1.new_vertex("one")
+        assert isinstance(vertex1, Node)
+        assert len(graph1.get_vertices()) == 1
+        vertex2 = graph1.new_vertex("one")
+        assert vertex2 is None
+        assert len(graph1.get_vertices()) == 1
+
+    def test_graph_insert_node(self):
         graph1 = Graph()
         node1 = Node("one")
-        graph1.add_node(node1)
+        graph1.insert_node(node1)
         assert len(graph1.get_vertices()) == 1
+
+    def test_graph_insert_duplicate_node(self):
+        graph1 = Graph()
+        node1 = Node("one")
+        node2 = Node("one")
+        ins1 = graph1.insert_node(node1)
+        assert len(graph1.get_vertices()) == 1
+        assert ins1 == 1
+        ins2 = graph1.insert_node(node2)
+        assert len(graph1.get_vertices()) == 1
+        assert ins2 == 0
 
     def test_graph_get_vertex(self):
         graph1 = Graph()
-        graph1.add_vertex("one")
+        graph1.new_vertex("one")
         vertex = graph1.get_vertex("one")
+        assert isinstance(vertex, Node)
         assert vertex.value == "one"
 
     def test_graph_get_vertices(self):
         graph1 = Graph()
-        graph1.add_vertex("one")
+        graph1.new_vertex("one")
         vertices = graph1.get_vertices()
         assert len(vertices) == 1
         assert vertices[0] == "one"
 
-    def test_graph_add_edge(self):
+    def test_graph_new_edge(self):
         graph1 = Graph()
-        graph1.add_edge("one", "two")
+        graph1.new_edge("one", "two")
         assert len(graph1.get_edges()) == 1
 
     def test_graph_adj_matrix(self):
         graph1 = Graph()
-        graph1.add_vertex("one")
-        graph1.add_vertex("two")
-        graph1.add_edge("one", "two")
+        graph1.new_vertex("one")
+        graph1.new_vertex("two")
+        graph1.new_edge("one", "two")
         matrix = graph1.get_adj_matrix()
         assert len(matrix) == 2
         assert len(matrix[0]) == 2
@@ -94,10 +115,10 @@ class TestGraph:
 
     def test_graph_adj_list(self):
         graph1 = Graph()
-        graph1.add_vertex("one")
-        graph1.add_vertex("two")
-        graph1.add_vertex("three")
-        graph1.add_edge("one", "two")
+        graph1.new_vertex("one")
+        graph1.new_vertex("two")
+        graph1.new_vertex("three")
+        graph1.new_edge("one", "two")
         adj_list = graph1.get_adj_list()
         assert len(adj_list["one"]) == 1
         assert len(adj_list["three"]) == 0
@@ -106,7 +127,7 @@ class TestGraph:
         graph1 = Graph()
         node1 = Node("one")
         node2 = Node("two", node1)
-        graph1.add_node(node1)
-        graph1.add_node(node2)
-        route = graph1.trace_path("two")
+        graph1.insert_node(node1)
+        graph1.insert_node(node2)
+        route = graph1.trace_back("two")
         assert route == ["one", "two"]

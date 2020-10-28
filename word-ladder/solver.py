@@ -9,7 +9,8 @@ def main():
         print("---")
         for option in options:
             print(option.start)
-            if option.distance < ladder.rungs[ridx].distance and option.distance >= 1:
+            if option.distance < ladder.rungs[ridx].distance\
+                    and option.distance >= 1:
                 # we're taking the first, closer option
                 if option.start != ladder.rungs[ridx].start:
                     ladder.rungs.append(option)

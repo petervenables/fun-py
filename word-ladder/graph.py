@@ -7,31 +7,93 @@ class Graph:
         self.vertices = {}
         self.edges = []
 
-    def add_vertex(self, value):
-        self.vertices[value] = Node(value)
+    def new_vertex(self, value):
+        """Creates a new vertex and inserts it into the graph
 
-    def add_node(self, node):
-        self.vertices[node.value] = node
+        Parameters:
+        value(Any): the value of the vertex to insert
 
-    def add_edge(self, start, end, weight=None):
+        Returns:
+        vertex(Node): the created node or None
+        """
+        if value not in self.get_vertices():
+            vertex = Node(value)
+            self.vertices[value] = vertex
+            return vertex
+        else:
+            return None
+
+    def insert_node(self, node):
+        """Inserts an existing node object into the graph
+
+        Parameters:
+        node(Node): The node to insert into the graph
+
+        Returns:
+        (int): the count of nodes inserted (0 or 1)
+        """
+        if node.value not in self.get_vertices():
+            self.vertices[node.value] = node
+            return 1
+        else:
+            return 0
+
+    def new_edge(self, start, end, weight=None):
+        """Inserts the edge defined by start and end node values into the graph
+
+        Parameters:
+        start(Any): the value of the start node in the edge
+        end(Any):   the value of the end node in the edge
+        weight(int): Optionally the weight of the edge
+
+        Returns:
+        edge(Edge): the newly created edge
+        """
         edge = Edge(start, end, weight)
         edge_list = self.get_edges()
         if edge.ends not in edge_list:
             self.edges.append(edge)
+            return edge
+        else:
+            return None
 
     def get_vertices(self) -> List:
+        """Returns the list of vertex values in the graph
+
+        Returns:
+        (List): List of vertex values in the graph
+        """
         return list(self.vertices.keys())
 
     def get_edges(self) -> List:
+        """Returns the list of Edges in the graph
+
+        Returns:
+        (List): a list of ends (Set) in the graph
+        """
         return [x.ends for x in self.edges]
 
     def get_vertex(self, value):
+        """Returns the node object identified by 'value'
+
+        Parameters:
+        value(Any): the value of the node to locate.
+
+        Returns:
+        (Node): the node whose value is 'value'
+        """
         if value in self.vertices.keys():
             return self.vertices[value]
         else:
             return None
 
     def get_adj_matrix(self) -> List:
+        """Produces the adjacency matrix for the graph
+
+        Returns:
+        matrix(List): A list of int lists containing 0s where the is no
+            adjacency and 1s on coordinates where there IS adjacency of nodes.
+        """
         matrix = []
         header = []
         for head in self.get_vertices():
@@ -47,6 +109,12 @@ class Graph:
         return matrix
 
     def get_adj_list(self) -> List:
+        """Produces the adjacency list for the graph
+
+        Returns:
+        adj_list(List): A list of dicts keyed on each node value and
+            referencing a list of adjacent node values.
+        """
         adj_list = {}
         for vtx in self.get_vertices():
             adj_list[vtx] = []
@@ -56,7 +124,17 @@ class Graph:
                     adj_list[vtx].append(value)
         return adj_list
 
-    def trace_path(self, value) -> List:
+    def trace_back(self, value) -> List:
+        """ Traces backward through the graph starting from the designated node
+            value and following parentNode links.
+
+        Parameters:
+        value (Any): the value of a start node in the graph
+
+        Returns:
+        path (List): an ordered list of values reversed (value at end)
+
+        """
         path = []
         node = self.get_vertex(value)
         if node is not None:
@@ -74,6 +152,11 @@ class Node:
         self.parent = parent
 
     def set_parent(self, parentNode):
+        """Updates the node with a parent node reference
+
+        Parameters:
+        parentNode(Node): The node to designate as the parent
+        """
         self.parent = parentNode
 
 

@@ -1,6 +1,6 @@
-from graph import Graph, Node, Edge
+from graph import Graph
 import word_func
-import word_list as WL
+# import word_list as WL
 
 
 def main():
@@ -9,7 +9,7 @@ def main():
     set1 = ["dog", "dag", "cat", "cot", "kit", "cog", "cop"]
 
     for word in set1:
-        mygraph.add_vertex(word)
+        mygraph.new_vertex(word)
 
     for start in mygraph.vertices:
         for end in mygraph.vertices:
@@ -17,7 +17,7 @@ def main():
                 next
             else:
                 if word_func.hamming_distance(start, end) == 1:
-                    mygraph.add_edge(start, end, 1)
+                    mygraph.new_edge(start, end, 1)
 
     path = ["cat", "cot", "cog", "dog"]
     for idx, step in enumerate(path):
@@ -30,7 +30,7 @@ def main():
                 if parent is not None:
                     vertex.parent = parent
 
-    route = mygraph.trace_path("cat")
+    route = mygraph.trace_back("cat")
     print(route)
 
     print(mygraph.get_edges())
