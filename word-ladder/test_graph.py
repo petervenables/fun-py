@@ -1,3 +1,4 @@
+import pytest
 from graph import Graph, Edge, Node
 
 
@@ -172,3 +173,6 @@ class TestGraph:
         graph1.insert_node(node2)
         route = graph1.trace_back("two")
         assert route == ["one", "two"]
+
+
+pytest.main()

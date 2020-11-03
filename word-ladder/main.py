@@ -3,6 +3,7 @@ from dijkstra import DijkstraSPFSolver
 from word_func import hamming_distance
 from word_list import dictionary as word_list
 import sys
+import argparse
 
 
 def extend_graph(graph, start):
@@ -57,15 +58,40 @@ def show_adj_list(graph):
 
 
 def main():
-    mygraph = Graph()
-    mygraph.new_vertex("dog")
-    mygraph = extend_graph(mygraph, "dog")
+    parser = argparse.ArgumentParser("Interactive Word Ladder Solver")
+    parser.add_argument(
+        'start',
+        type=str,
+        help="the ladder start word (3 letters)"
+    )
+    parser.add_argument(
+        'end',
+        type=str,
+        help="the ladder end word (3 letters)"
+    )
+    args = parser.parse_args()
 
-    curr = mygraph.get_adj_node_values("dog")
+    if len(args.start) != 3:
+        print("ERR: must provide a three letter word argument for 'start'")
+        sys.exit(1)
+    else:
+        start = args.start.lower()
+
+    if len(args.end) != 3:
+        print("ERR: must provide a three letter word argument for 'end'")
+        sys.exit(1)
+    else:
+        end = args.end.lower()
+
+    mygraph = Graph()
+    mygraph.new_vertex(start)
+    mygraph = extend_graph(mygraph, start)
+
+    curr = mygraph.get_adj_node_values(start)
     next = set()
-    limit = 5
-    count = 2
-    while "cat" not in mygraph.get_vertices() and count < limit:
+    limit = 10
+    count = 0
+    while end not in mygraph.get_vertices() and count < limit:
         for value in curr:
             mygraph = extend_graph(mygraph, value)
             if value not in next:
@@ -76,11 +102,11 @@ def main():
             curr = curr.union(mygraph.get_adj_node_values(each))
         count += 1
 
-    if "bat" not in mygraph.get_vertices():
+    if end not in mygraph.get_vertices():
         print("FAILED!")
         sys.exit(1)
 
-    spfsolver = DijkstraSPFSolver(mygraph, "dog", "cat")
+    spfsolver = DijkstraSPFSolver(mygraph, start, end)
     spfsolver.solve()
     print(spfsolver.show_solution())
 
