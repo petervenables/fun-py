@@ -1,4 +1,5 @@
 from typing import List
+import sys
 
 
 class Graph:
@@ -7,17 +8,18 @@ class Graph:
         self.vertices = {}
         self.edges = []
 
-    def new_vertex(self, value):
+    def new_vertex(self, value, distance=0):
         """Creates a new vertex and inserts it into the graph
 
         Parameters:
         value(Any): the value of the vertex to insert
+        distance(int): the tentative distance of the node
 
         Returns:
         vertex(Node): the created node or None
         """
         if value not in self.get_vertices():
-            vertex = Node(value)
+            vertex = Node(value, distance)
             self.vertices[value] = vertex
             return vertex
         else:
@@ -73,6 +75,23 @@ class Graph:
         """
         return [x.ends for x in self.edges]
 
+    def get_edge(self, start, end):
+        """returns a single edge object or None
+
+        Parameters:
+        start(Node.value): one end of the edge
+        end(Node.value): another end of the edge
+
+        Returns:
+        (Edge) Edge object if found or None
+        """
+        if {start, end} in self.get_edges():
+            for edge in self.edges:
+                if len({start, end}.difference(edge.ends)) == 0:
+                    return edge
+        else:
+            return None
+
     def get_vertex(self, value):
         """Returns the node object identified by 'value'
 
@@ -108,20 +127,51 @@ class Graph:
             matrix[row][col] = 1
         return matrix
 
-    def get_adj_list(self) -> List:
-        """Produces the adjacency list for the graph
+    def get_adj_node_values(self, value):
+        """Produces the adjacency list for the given node value
+
+        Parameters:
+        value(Any): the value of a node in the graph for which the list
+            is desired
 
         Returns:
-        adj_list(List): A list of dicts keyed on each node value and
-            referencing a list of adjacent node values.
+        adj_list(Dict): a dictionary whose key is the node value and whose
+            value is a set of adjacent node values
+        """
+        nodes = set()
+        for edge in self.edges:
+            if value in edge.ends:
+                end = edge.ends - {value}
+                nodes = nodes.union(end)
+        return nodes
+
+    def get_adj_nodes(self, value):
+        """returns all nodes adjacent to the named value in the graph
+
+        Parameters:
+        value(Node.value):  the value of the node in the graph for which the
+            adjacent nodes are desired
+
+        Returns:
+        nodes(List): all adjacent node objects or empty list
+        """
+        nodes = []
+        for edge in self.edges:
+            if value in edge.ends:
+                end = list(edge.ends - {value})[0]
+                nodes.append(self.vertices.get(end, None))
+        return nodes
+
+    def get_adj_list(self):
+        """Returns the adjacentcy list for the graph
+
+        Returns:
+        adj_list(List): a list of dictionaries keyed on the graph's
+            vertices and each having a set of adjacent nodes as values
         """
         adj_list = {}
         for vtx in self.get_vertices():
-            adj_list[vtx] = []
-            for edge in self.edges:
-                if vtx in edge.ends:
-                    value = edge.ends - {vtx}
-                    adj_list[vtx].append(value)
+            adj_list[vtx] = self.get_adj_node_values(vtx)
         return adj_list
 
     def trace_back(self, value) -> List:
@@ -147,9 +197,10 @@ class Graph:
 
 class Node:
 
-    def __init__(self, value, parent=None):
+    def __init__(self, value, parent=None, distance=sys.maxsize):
         self.value = value
         self.parent = parent
+        self.distance = distance
 
     def set_parent(self, parentNode):
         """Updates the node with a parent node reference

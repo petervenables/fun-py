@@ -102,6 +102,18 @@ class TestGraph:
         graph1.new_edge("one", "two")
         assert len(graph1.get_edges()) == 1
 
+    def test_graph_find_edge(self):
+        graph1 = Graph()
+        graph1.new_edge("one", "two")
+        edge1 = graph1.get_edge("one", "two")
+        assert edge1.start == "one"
+        assert edge1.end == "two"
+        edge2 = graph1.get_edge("two", "one")
+        assert edge2.start == "one"
+        assert edge2.end == "two"
+        edge3 = graph1.get_edge("three", "four")
+        assert edge3 is None
+
     def test_graph_adj_matrix(self):
         graph1 = Graph()
         graph1.new_vertex("one")
@@ -112,6 +124,35 @@ class TestGraph:
         assert len(matrix[0]) == 2
         assert matrix[0][1] == 1
         assert matrix[0][0] == 0
+
+    def test_graph_adj_node_values(self):
+        graph1 = Graph()
+        graph1.new_vertex("one")
+        graph1.new_vertex("two")
+        graph1.new_vertex("three")
+        graph1.new_edge("one", "two")
+        nodes = graph1.get_adj_node_values("one")
+        assert len(nodes) == 1
+        assert "one" not in nodes
+        assert "two" in nodes
+        graph1.new_edge("one", "three")
+        nodes = graph1.get_adj_node_values("one")
+        assert len(nodes) == 2
+        assert "three" in nodes
+
+    def test_graph_adj_nodes(self):
+        graph1 = Graph()
+        graph1.new_vertex("one")
+        graph1.new_vertex("two")
+        graph1.new_vertex("three")
+        graph1.new_edge("one", "two")
+        nodes = graph1.get_adj_nodes("one")
+        assert len(nodes) == 1
+        assert "two" == nodes[0].value
+        graph1.new_edge("one", "three")
+        nodes = graph1.get_adj_nodes("one")
+        assert len(nodes) == 2
+        assert "three" == nodes[1].value
 
     def test_graph_adj_list(self):
         graph1 = Graph()

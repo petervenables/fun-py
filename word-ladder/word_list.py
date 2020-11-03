@@ -98,3 +98,8 @@ dictionary = [
     "yon", "you", "yow", "yuk", "yum", "yup", "zag", "zap", "zax", "zed",
     "zee", "zek", "zig", "zin", "zip", "zit", "zoa", "zoo",
 ]
+
+short_list = [
+    "dog", "dig", "dag", "cog", "bog", "big", "bag", "cod", "cox", "cat",
+    "cot", "cop", "bat", "bad", "car", "bar", "dab", "bit", "cap", "dat"
+]
