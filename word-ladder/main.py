@@ -27,15 +27,6 @@ def extend_graph(graph, start):
     return graph
 
 
-def converge_edges(graph):
-    header = graph.get_vertices()
-    for start in header:
-        for end in header:
-            if hamming_distance(start, end) == 1:
-                graph.new_edge(start, end, 1)
-    return graph
-
-
 def show_matrix(graph):
     header = graph.get_vertices()
     matrix = graph.get_adj_matrix()
@@ -103,7 +94,7 @@ def main():
         count += 1
 
     if end not in mygraph.get_vertices():
-        print("FAILED!")
+        print("Failed to find end word in graph: no solution.")
         sys.exit(1)
 
     spfsolver = DijkstraSPFSolver(mygraph, start, end)
