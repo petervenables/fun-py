@@ -1,5 +1,6 @@
 import random
 
+
 def morph_count(first, second):
     count = 0
     if first == second:
@@ -17,9 +18,10 @@ def morph_count(first, second):
             count += 1
     return count
 
-# Remove the characters from the longer string to 
-# account for those changes
+
 def remove_added(shorter, longer):
+    # Remove the characters from the longer string to
+    # account for those changes
     while len(longer) > len(shorter):
         idx = random.randrange(len(longer))
         if longer[idx] not in shorter:
