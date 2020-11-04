@@ -13,18 +13,6 @@ class DijkstraSPFSolver:
         self.todo = []
 
     def solve(self):
-        # for each vertex in the graph:
-        # check the distance to start
-        #   if is start, set distance = 0
-        #   else: distance = 1
-        # get all adjacent nodes
-        # visit the shortest to longest in order
-        # shortest is determined by:
-        #   current distance from parent plus length of edge to next
-        #   (i.e. my distance plus distance to next vertex)
-        # mark the vertex as visited:
-        #   add it to the checked list
-
         for vertex in self.graph.vertices.values():
             key = vertex.value
             if key == self.start:
