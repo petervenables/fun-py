@@ -13,7 +13,8 @@ class TestLongestString:
                 ("12345123", 5),
                 ("dvdf", 3),
                 ("aa", 1),
-                ("ckilbkd", 5)
+                ("ckilbkd", 5),
+                ("ohvhjdml", 6)
             ]
     )
     def test_longest_string(self, inputs, result):
