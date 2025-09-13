@@ -8,24 +8,13 @@ class Solution:
         if length <= 1:
             return length
         while index < length:
-            if s[index] == s[index-1]:
-                if len(s[start:end+1]) > longest:
-                    longest = len(s[start:end])
-                start = index
-                index += 1
-                end = index
-            if index - end >= 2:
-                if len(s[start:end+1]) > longest:
-                    longest = len(s[start:end])
-                start = index-1
-                end = index
-            if index >= length:
-                continue
-            if s[start] == s[index]:
+            while s[index] in s[start:end] and start < end:
+                if len(s[start:end]) > longest:
+                    longest = len(s[start:end]) 
                 start += 1
-            if s[index] not in s[start:end+1]:
+            if s[index] not in s[start:end]:
                 end += 1
-            if len(s[start:end+1]) > longest:
-                longest = len(s[start:end+1])
             index += 1
+        if len(s[start:end]) > longest:
+            longest = len(s[start:end])
         return longest
